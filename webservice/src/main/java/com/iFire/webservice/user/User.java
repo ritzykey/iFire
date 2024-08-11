@@ -4,19 +4,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue
     long id;
 
+    @NotBlank
+    @Size(min = 4, max = 255)
     String username;
 
+    @NotBlank
+    @Email
     String email;
 
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "must match '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'")
     String password;
 
     public long getId() {
