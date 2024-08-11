@@ -1,5 +1,6 @@
 package com.iFire.webservice.user;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,18 @@ public class UserController {
         Map<String, String> validationErrors = exception.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage,
                         (existing, replacing) -> existing));
+        apiError.setValidationErrors(validationErrors);
+        return apiError;
+    }
+    @ExceptionHandler(NotUniqueEmailException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ApiError handleNotUniqueEmailEx(NotUniqueEmailException exception) {
+        ApiError apiError = new ApiError();
+        apiError.setPath("api/v1/users");
+        apiError.setMessage("Validation error");
+        apiError.setStatus(400);
+        Map<String, String> validationErrors = new HashMap<>();
+        validationErrors.put("email", "E-mail in use");
         apiError.setValidationErrors(validationErrors);
         return apiError;
     }
