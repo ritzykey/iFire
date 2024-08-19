@@ -20,16 +20,16 @@ public class User {
     @GeneratedValue
     long id;
 
-    @NotBlank
+    @NotBlank(message = "{iFire.constraints.Username.NotBlank}")
     @Size(min = 4, max = 255)
     String username;
 
     @NotBlank
     @Email
-    @UniqueEmail
+    @UniqueEmail(message = "{iFire.constraints.email.notunique}")
     String email;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "must match '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "{iFire.constraints.password.pattern}")
     String password;
 
     public long getId() {
