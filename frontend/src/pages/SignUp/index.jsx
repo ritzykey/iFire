@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { signUp } from "./api"
 import Input from "./components/Input"
 
@@ -82,6 +82,15 @@ export function SignUp() {
         }
     }
 
+    const passwordRepeatError = useMemo(
+        () => {
+            if (password && password !== passwordRepeat) {
+                console.log("always running");
+                return 'Password mismatch'
+            }
+            return ''
+        }, [password, passwordRepeat]
+    )
 
     return <div className="container mt-3">
         <div className="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
@@ -91,7 +100,7 @@ export function SignUp() {
                     <Input id="username" label="Username" error={errorMessage.username} onChange={(event) => setUsername(event.target.value)} />
                     <Input id="email" label="E-mail" error={errorMessage.email} onChange={(event) => setEmail(event.target.value)} />
                     <Input id="password" label="Password" type="password" error={errorMessage.password} onChange={(event) => setPassword(event.target.value)} />
-                    <Input id="passwordRepeat" label="Password Repeat" type="password" error={errorMessage.password} onChange={(event) => setPasswordRepeat(event.target.value)} />
+                    <Input id="passwordRepeat" label="Password Repeat" type="password" error={passwordRepeatError} onChange={(event) => setPasswordRepeat(event.target.value)} />
                     {successMessage && <div className="alert alert-success">{successMessage}</div>}
                     {generalError && <div className="alert alert-danger">{generalError}</div>}
                     <div className="text-center">
