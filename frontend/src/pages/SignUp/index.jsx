@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { signUp } from "./api"
 import Input from "./components/Input"
+import { useTranslation } from "react-i18next"
+import LanguageSelector from "../../shared/components/LanguageSelector"
 
 export function SignUp() {
 
@@ -12,6 +14,7 @@ export function SignUp() {
     const [successMessage, setSuccessMessage] = useState();
     const [errorMessage, setErrorMessage] = useState({});
     const [generalError, setGeneralError] = useState();
+    const { t } = useTranslation();
 
     useEffect(() => {
         setErrorMessage((lastErrors) => {
@@ -74,9 +77,13 @@ export function SignUp() {
 
 
         } catch (error) {
-            if (error.response?.data && error.response?.data.status === 400)
-                return setErrorMessage(error.response?.data.validationErrors)
-            setGeneralError('Unexpected error occured. Please try again.')
+            if (error.response?.data) {
+                if (error.response?.data.status === 400)
+                    return setErrorMessage(error.response?.data.validationErrors)
+
+                return setGeneralError(error.response?.data.message)
+            }
+            setGeneralError(t("genericError"))
         } finally {
             setApiProgress(false)
         }
@@ -86,7 +93,7 @@ export function SignUp() {
         () => {
             if (password && password !== passwordRepeat) {
                 console.log("always running");
-                return 'Password mismatch'
+                return t("passwordMismatch")
             }
             return ''
         }, [password, passwordRepeat]
@@ -95,21 +102,22 @@ export function SignUp() {
     return <div className="container mt-3">
         <div className="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
             <form className="card" onSubmit={onSubmit}>
-                <h1 className="text-center card-header">Sign UP</h1>
+                <h1 className="text-center card-header">{t("signUp")}</h1>
                 <div className="card-header">
-                    <Input id="username" label="Username" error={errorMessage.username} onChange={(event) => setUsername(event.target.value)} />
-                    <Input id="email" label="E-mail" error={errorMessage.email} onChange={(event) => setEmail(event.target.value)} />
-                    <Input id="password" label="Password" type="password" error={errorMessage.password} onChange={(event) => setPassword(event.target.value)} />
-                    <Input id="passwordRepeat" label="Password Repeat" type="password" error={passwordRepeatError} onChange={(event) => setPasswordRepeat(event.target.value)} />
+                    <Input id="username" label={t('username')} error={errorMessage.username} onChange={(event) => setUsername(event.target.value)} />
+                    <Input id="email" label={t('email')} error={errorMessage.email} onChange={(event) => setEmail(event.target.value)} />
+                    <Input id="password" label={t('password')} type="password" error={errorMessage.password} onChange={(event) => setPassword(event.target.value)} />
+                    <Input id="passwordRepeat" label={t('passwordRepeat')} type="password" error={passwordRepeatError} onChange={(event) => setPasswordRepeat(event.target.value)} />
                     {successMessage && <div className="alert alert-success">{successMessage}</div>}
                     {generalError && <div className="alert alert-danger">{generalError}</div>}
                     <div className="text-center">
                         <button className="btn btn-primary" disabled={apiProgress || (!password || password !== passwordRepeat)}>
                             {apiProgress && <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-                            Sign UP</button>
+                            {t("signUp")}</button>
                     </div>
                 </div>
             </form>
+            <LanguageSelector />
         </div>
 
     </div>

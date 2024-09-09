@@ -1,4 +1,4 @@
-package com.iFire.webservice.user;
+package com.iFire.webservice.user.expection;
 
 import java.util.Collections;
 import java.util.Map;

@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iFire.webservice.error.ApiError;
 import com.iFire.webservice.shared.GenericMessage;
 import com.iFire.webservice.shared.Messages;
+import com.iFire.webservice.user.dto.UserCreate;
+import com.iFire.webservice.user.expection.ActivationNotificationExpection;
+import com.iFire.webservice.user.expection.NotUniqueEmailException;
 
 import jakarta.validation.Valid;
 
@@ -29,8 +32,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/users")
-    GenericMessage createUser(@Valid @RequestBody User user) {
-        userService.save(user);
+    GenericMessage createUser(@Valid @RequestBody UserCreate user) {
+        userService.save(user.toUser());
         String message = Messages.getMessageForLocale("iFire.create.user.success.message",
                 LocaleContextHolder.getLocale());
         return new GenericMessage(message);
@@ -59,6 +62,16 @@ public class UserController {
         apiError.setMessage(exception.getMessage());
         apiError.setStatus(400);
         apiError.setValidationErrors(exception.getValidationErrors());
+        return apiError;
+    }
+
+    @ExceptionHandler(ActivationNotificationExpection.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    ApiError handleActivationNotificationEx(ActivationNotificationExpection exception) {
+        ApiError apiError = new ApiError();
+        apiError.setPath("api/v1/users");
+        apiError.setMessage(exception.getMessage());
+        apiError.setStatus(502);
         return apiError;
     }
 

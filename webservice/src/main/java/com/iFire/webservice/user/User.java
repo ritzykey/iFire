@@ -1,36 +1,45 @@
 package com.iFire.webservice.user;
 
-import com.iFire.webservice.user.validation.UniqueEmail;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
 public class User {
 
     @Id
     @GeneratedValue
     long id;
 
-    @NotBlank(message = "{iFire.constraints.Username.NotBlank}")
-    @Size(min = 4, max = 255)
     String username;
 
-    @NotBlank
-    @Email
-    @UniqueEmail(message = "{iFire.constraints.email.notunique}")
     String email;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "{iFire.constraints.password.pattern}")
     String password;
+
+    boolean active = false;
+
+    String activationToken;
+
+    public String getActivationToken() {
+        return activationToken;
+    }
+
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public long getId() {
         return id;
