@@ -1,11 +1,11 @@
-package com.iFire.webservice.user.expection;
+package com.ifire.webservice.user.expection;
 
 import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import com.iFire.webservice.shared.Messages;
+import com.ifire.webservice.shared.Messages;
 
 public class NotUniqueEmailException extends RuntimeException {
     public NotUniqueEmailException() {

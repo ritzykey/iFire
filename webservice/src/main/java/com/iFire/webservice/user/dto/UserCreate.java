@@ -1,7 +1,7 @@
-package com.iFire.webservice.user.dto;
+package com.ifire.webservice.user.dto;
 
-import com.iFire.webservice.user.User;
-import com.iFire.webservice.user.validation.UniqueEmail;
+import com.ifire.webservice.user.User;
+import com.ifire.webservice.user.validation.UniqueEmail;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

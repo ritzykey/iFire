@@ -1,7 +1,13 @@
-package com.iFire.webservice.user;
+package com.ifire.webservice.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
+
+    User findByActivationToken(String token);
+
+    // @Query(value = "Select u from User u")
+    // Page<UserProjection> getAllUserRecords(Pageable pageable);
+
 }

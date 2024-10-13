@@ -1,17 +1,21 @@
-package com.iFire.webservice.user;
+package com.ifire.webservice.user;
 
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.iFire.webservice.email.EmailService;
-import com.iFire.webservice.user.expection.ActivationNotificationExpection;
-import com.iFire.webservice.user.expection.NotUniqueEmailException;
+import com.ifire.webservice.email.EmailService;
+import com.ifire.webservice.user.dto.UserDTO;
+import com.ifire.webservice.user.expection.ActivationNotificationExpection;
+import com.ifire.webservice.user.expection.InvalidTokenException;
+import com.ifire.webservice.user.expection.NotUniqueEmailException;
 
 import jakarta.transaction.Transactional;
 
@@ -39,6 +43,32 @@ public class UserService {
         } catch (MailException exception) {
             throw new ActivationNotificationExpection();
         }
+    }
+
+    public void activateUser(String token) {
+        User user = userRepository.findByActivationToken(token);
+
+        if (user == null) {
+            throw new InvalidTokenException();
+        }
+
+        user.setActive(true);
+        user.setActivationToken(null);
+        userRepository.save(user);
+    }
+
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(UserDTO::new);
+    }
+
+    public UserDTO getIdUser(Long id) {
+
+        return new UserDTO(userRepository.findById(id).get());
+    }
+
+    public User findByEmail(String email) {
+
+        return userRepository.findByEmail(email);
     }
 
 }

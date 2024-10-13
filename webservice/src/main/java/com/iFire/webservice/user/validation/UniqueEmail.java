@@ -1,4 +1,4 @@
-package com.iFire.webservice.user.validation;
+package com.ifire.webservice.user.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

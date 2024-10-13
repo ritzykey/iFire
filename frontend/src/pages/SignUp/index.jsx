@@ -112,12 +112,12 @@ export function SignUp() {
                     {generalError && <div className="alert alert-danger">{generalError}</div>}
                     <div className="text-center">
                         <button className="btn btn-primary" disabled={apiProgress || (!password || password !== passwordRepeat)}>
-                            {apiProgress && <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>}
+                            {apiProgress && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
                             {t("signUp")}</button>
                     </div>
                 </div>
             </form>
-            <LanguageSelector />
+            
         </div>
 
     </div>

@@ -1,4 +1,4 @@
-package com.iFire.webservice.email;
+package com.ifire.webservice.email;
 
 import java.util.Properties;
 
@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.iFire.webservice.configuration.iFireProperties;
+import com.ifire.webservice.configuration.iFireProperties;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;

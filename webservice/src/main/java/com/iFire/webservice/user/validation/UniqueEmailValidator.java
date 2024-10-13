@@ -1,9 +1,9 @@
-package com.iFire.webservice.user.validation;
+package com.ifire.webservice.user.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.iFire.webservice.user.User;
-import com.iFire.webservice.user.UserRepository;
+import com.ifire.webservice.user.User;
+import com.ifire.webservice.user.UserRepository;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

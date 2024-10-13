@@ -14,7 +14,7 @@ const LanguageSelector = () => {
     }
 
     return (
-        <div className="d-flex justify-content-end mt-2">
+        <div className="d-flex justify-content-end me-4">
             <img
                 className="me-2"
                 role="button"

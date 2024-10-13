@@ -1,4 +1,4 @@
-package com.iFire.webservice.configuration;
+package com.ifire.webservice.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

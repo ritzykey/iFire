@@ -1,4 +1,4 @@
-package com.iFire.webservice.error;
+package com.ifire.webservice.error;
 
 import java.util.Date;
 import java.util.Map;

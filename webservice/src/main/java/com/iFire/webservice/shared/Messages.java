@@ -1,4 +1,4 @@
-package com.iFire.webservice.shared;
+package com.ifire.webservice.shared;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
