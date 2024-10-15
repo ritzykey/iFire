@@ -103,7 +103,7 @@ export function SignUp() {
         <div className="col-lg-6 offset-lg-3 col-sm-8 offset-sm-2">
             <form className="card" onSubmit={onSubmit}>
                 <h1 className="text-center card-header">{t("signUp")}</h1>
-                <div className="card-header">
+                <div className="card-body">
                     <Input id="username" label={t('username')} error={errorMessage.username} onChange={(event) => setUsername(event.target.value)} />
                     <Input id="email" label={t('email')} error={errorMessage.email} onChange={(event) => setEmail(event.target.value)} />
                     <Input id="password" label={t('password')} type="password" error={errorMessage.password} onChange={(event) => setPassword(event.target.value)} />

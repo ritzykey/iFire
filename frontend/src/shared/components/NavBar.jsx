@@ -1,15 +1,16 @@
-import { signUp } from "@/pages/SignUp/api";
-import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../state/context";
+import { useAuthDispatch, useAuthState } from "../state/context";
 
 const NavBar = () => {
 
 
     const { t } = useTranslation();
 
-    const authState = useContext(AuthContext);
+    const authState = useAuthState();
+    const dispatch = useAuthDispatch();
+
+
 
     return <nav className="navbar navbar-expand-sm bg-body-tertiary" data-bs-theme="dark" >
         <div className="container-fluid">
@@ -32,8 +33,10 @@ const NavBar = () => {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/signup" >{t("signUp")}</Link>
                             </li>
-                            <a className="nav-item nav-link" href="#">Pricing</a>
-                            <a className="nav-item nav-link disabled" href="#">Disabled</a>
+                            <li className="nav-item">
+                                <Link className="nav-link" to='#' >Pricing</Link>
+                            </li>
+                            <li className="nav-item nav-link disabled" href="#">Disabled</li>
 
                         </>
                     }
@@ -44,7 +47,7 @@ const NavBar = () => {
                                 <Link className="nav-link" to={`/user/${authState.id}`}>My Profile</Link>
                             </li>
                             <li className="nav-item">
-                                <span className="nav-link" role="button" >Logout</span>
+                                <button className="nav-link" onClick={() => dispatch({ type: 'logout-success' })}>Logout</button>
                             </li>
                         </>
                     }

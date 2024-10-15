@@ -27,7 +27,6 @@ function App() {
           <LanguageSelector />
         </div>
       </div>
-
     </AuthenticationContext>
   )
 }

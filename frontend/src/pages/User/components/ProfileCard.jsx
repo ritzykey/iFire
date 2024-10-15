@@ -1,12 +1,11 @@
 
 import defaultProfileImage from '@/assets/defaultProfileImage.jpg';
-import { AuthContext } from '@/shared/state/context';
-import { useContext } from 'react';
+import { useAuthState } from '@/shared/state/context';
 
 
 const ProfileCard = ({ user }) => {
 
-    const authState = useContext(AuthContext);
+    const authState = useAuthState();
 
     return <>
         <div className="card">
@@ -16,7 +15,7 @@ const ProfileCard = ({ user }) => {
                     width={200}
                     alt=""
                 />
-                {authState.id === user.id &&  <div className='d-flex justify-content-end'>
+                {authState.id === user.id && <div className='d-flex justify-content-end'>
                     <div className="btn btn-outline-secondary ">Edit</div>
                 </div>}
             </div>

@@ -1,19 +1,19 @@
-import http from "@/lib/http";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import login from "./api";
 import { useTranslation } from "react-i18next";
-import { AuthContext } from "@/shared/state/context";
+import {  useAuthDispatch } from "@/shared/state/context";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
 
-    const authState = useContext(AuthContext);
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [generalError, setGeneralError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
+    const dispatch = useAuthDispatch();
 
     const { t } = useTranslation();
 
@@ -29,7 +29,7 @@ const Login = () => {
         console.log('Form Submitted:', event);
         login({ email, password })
             .then(({ data }) => {
-                authState.onLoginSuccess(data.user)
+                dispatch({ type: 'login-success', data: data })
                 navigate("/")
             })
             .catch(

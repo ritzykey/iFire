@@ -1,21 +1,47 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { loadAuthState, storeAuthState } from "./storage";
+import { setToken } from "@/lib/http";
 
 
 export const AuthContext = createContext()
 
-export function AuthenticationContext({ children }) {
+export const AuthDispatchContext = createContext()
 
-    const [auth, setAuth] = useState({id :0 });
+export function useAuthState() {
+    return useContext(AuthContext)
+}
 
-    const onLoginSuccess = (data) => {
-        setAuth(data);
+export function useAuthDispatch() {
+    return useContext(AuthDispatchContext)
+}
+
+const authReducer = (authState, action) => {
+
+    switch (action.type) {
+        case 'login-success':
+            setToken(action.data.token)
+            return action.data.user;
+        case 'logout-success':
+            setToken()
+            return { id: 0 }
+        default:
+            throw new Error(`unknown action ${action.type}`)
     }
 
-    return <AuthContext.Provider value={{
-        ...auth,
-        onLoginSuccess
-    }} >
-        {children}
+}
+
+export function AuthenticationContext({ children }) {
+
+    const [authState, dispatch] = useReducer(authReducer, loadAuthState())
+
+    useEffect(() => {
+        storeAuthState(authState)
+    }, [authState]);
+
+    return <AuthContext.Provider value={authState} >
+        <AuthDispatchContext.Provider value={dispatch} >
+            {children}
+        </AuthDispatchContext.Provider>
     </AuthContext.Provider>
 }
 
