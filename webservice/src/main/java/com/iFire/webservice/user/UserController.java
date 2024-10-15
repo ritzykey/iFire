@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ifire.webservice.auth.token.TokenService;
 import com.ifire.webservice.shared.GenericMessage;
 import com.ifire.webservice.shared.Messages;
 import com.ifire.webservice.user.dto.UserCreate;
@@ -26,10 +28,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/users")
-    Page<UserDTO> getAllUsers(Pageable page) {
+    @Autowired
+    TokenService tokenService;
 
-        return userService.getAllUsers(page);
+    @GetMapping("/users")
+    Page<UserDTO> getAllUsers(Pageable page,
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+                var loggedInUser = tokenService.verifyToken(authorizationHeader);
+
+        return userService.getAllUsers(page, loggedInUser);
     }
 
     @GetMapping("/users/{id}")
@@ -54,7 +61,5 @@ public class UserController {
 
         return new GenericMessage(message);
     }
-
-
 
 }

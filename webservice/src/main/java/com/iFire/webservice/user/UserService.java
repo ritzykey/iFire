@@ -57,8 +57,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Page<UserDTO> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable).map(UserDTO::new);
+    public Page<UserDTO> getAllUsers(Pageable pageable, User loggedInUser) {
+
+        if (loggedInUser == null) {
+            return userRepository.findAll(pageable).map(UserDTO::new);
+        }
+
+        return userRepository.findByIdNot(loggedInUser.getId(), pageable).map(UserDTO::new);
+
     }
 
     public UserDTO getIdUser(Long id) {
