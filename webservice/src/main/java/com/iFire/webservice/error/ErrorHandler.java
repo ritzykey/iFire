@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ifire.webservice.auth.exception.AuthenticationException;
 import com.ifire.webservice.shared.Messages;
 import com.ifire.webservice.user.expection.ActivationNotificationExpection;
+import com.ifire.webservice.user.expection.AuthorizationException;
 import com.ifire.webservice.user.expection.InvalidTokenException;
 import com.ifire.webservice.user.expection.NotUniqueEmailException;
 
@@ -30,7 +31,8 @@ public class ErrorHandler {
             AuthenticationException.class,
             InvalidTokenException.class,
             ActivationNotificationExpection.class,
-            NotUniqueEmailException.class
+            NotUniqueEmailException.class,
+            AuthorizationException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ResponseEntity<ApiError> handleException(HttpServletRequest request, Exception exception) {
@@ -80,18 +82,24 @@ public class ErrorHandler {
             return ResponseEntity.status(401).body(apiError);
         }
 
+        if (exception instanceof AuthorizationException) {
+            apiError.setStatus(403);
+            return ResponseEntity.status(403).body(apiError);
+        }
+
         return ResponseEntity.badRequest().body(apiError);
 
     }
 
     // @ExceptionHandler(AuthenticationException.class)
-    // ResponseEntity<?> handleAuthenticationException(HttpServletRequest hRequest, AuthenticationException exception) {
-    //     ApiError error = new ApiError();
-    //     error.setPath(hRequest.getRequestURI());
-    //     error.setStatus(401);
-    //     error.setMessage(exception.getMessage());
+    // ResponseEntity<?> handleAuthenticationException(HttpServletRequest hRequest,
+    // AuthenticationException exception) {
+    // ApiError error = new ApiError();
+    // error.setPath(hRequest.getRequestURI());
+    // error.setStatus(401);
+    // error.setMessage(exception.getMessage());
 
-    //     return ResponseEntity.status(401).body(error);
+    // return ResponseEntity.status(401).body(error);
     // }
 
     // @ExceptionHandler(NotUniqueEmailException.class)

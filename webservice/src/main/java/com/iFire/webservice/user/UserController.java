@@ -18,8 +18,11 @@ import com.ifire.webservice.shared.GenericMessage;
 import com.ifire.webservice.shared.Messages;
 import com.ifire.webservice.user.dto.UserCreate;
 import com.ifire.webservice.user.dto.UserDTO;
+import com.ifire.webservice.user.dto.UserUpdate;
+import com.ifire.webservice.user.expection.AuthorizationException;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -34,14 +37,14 @@ public class UserController {
     @GetMapping("/users")
     Page<UserDTO> getAllUsers(Pageable page,
             @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
-                var loggedInUser = tokenService.verifyToken(authorizationHeader);
+        User loggedInUser = tokenService.verifyToken(authorizationHeader);
 
         return userService.getAllUsers(page, loggedInUser);
     }
 
     @GetMapping("/users/{id}")
-    public UserDTO getMethodName(@PathVariable String id) {
-        return userService.getIdUser(id);
+    UserDTO getMethodName(@PathVariable String id) {
+        return new UserDTO(userService.getIdUser(id));
     }
 
     @PostMapping("/users")
@@ -60,6 +63,15 @@ public class UserController {
                 LocaleContextHolder.getLocale());
 
         return new GenericMessage(message);
+    }
+
+    @PutMapping("/users/{id}")
+    UserDTO updateUser(@PathVariable String id, @Valid @RequestBody UserUpdate userUpdate,
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+        User loggedInUser = tokenService.verifyToken(authorizationHeader);
+        if (loggedInUser == null || !loggedInUser.getId().equals(id))
+            throw new AuthorizationException();
+        return userService.updateUser(id, userUpdate);
     }
 
 }

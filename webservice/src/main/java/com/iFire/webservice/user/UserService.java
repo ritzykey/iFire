@@ -1,5 +1,6 @@
 package com.ifire.webservice.user;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ifire.webservice.email.EmailService;
 import com.ifire.webservice.user.dto.UserDTO;
+import com.ifire.webservice.user.dto.UserUpdate;
 import com.ifire.webservice.user.expection.ActivationNotificationExpection;
 import com.ifire.webservice.user.expection.InvalidTokenException;
 import com.ifire.webservice.user.expection.NotUniqueEmailException;
-
 
 @Service
 public class UserService {
@@ -30,7 +31,7 @@ public class UserService {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Transactional(rollbackFor = MailException.class )
+    @Transactional(rollbackFor = MailException.class)
     public void save(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -67,14 +68,20 @@ public class UserService {
 
     }
 
-    public UserDTO getIdUser(String id) {
+    public User getIdUser(String id) {
 
-        return new UserDTO(userRepository.findById(id).get());
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
     }
 
     public User findByEmail(String email) {
 
         return userRepository.findByEmail(email);
+    }
+
+    public UserDTO updateUser(String id, UserUpdate userUpdate) {
+        User inDB = getIdUser(id);
+        inDB.setUsername(userUpdate.username());
+        return new UserDTO(userRepository.save(inDB));
     }
 
 }

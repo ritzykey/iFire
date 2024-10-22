@@ -47,7 +47,7 @@ const User = () => {
 
     return <><div className="h2" style={style}>  User Page</div>
         <span>
-            {user?.username && <div className="h2" style={style}>{user?.username}</div>}
+            {/* {user?.username && <div className="h2" style={style}>{user?.username}</div>} */}
 
             <ProfileCard user={user} />
 
