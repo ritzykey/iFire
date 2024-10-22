@@ -1,8 +1,8 @@
 import { useLocation, useParams } from "react-router-dom";
 import getUser from "./api";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import ProfileCard from "./components/ProfileCard";
+import { useTranslation } from "react-i18next";
 
 const User = () => {
 
@@ -41,9 +41,13 @@ const User = () => {
 
     }, [location]);
 
-    return <><div className="h2" >  User Page</div>
+    const style = {
+        color: "white"
+    }
+
+    return <><div className="h2" style={style}>  User Page</div>
         <span>
-            {user?.username && <div className="h2">{user?.username}</div>}
+            {user?.username && <div className="h2" style={style}>{user?.username}</div>}
 
             <ProfileCard user={user} />
 

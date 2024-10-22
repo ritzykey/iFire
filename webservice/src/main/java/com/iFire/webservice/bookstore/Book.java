@@ -2,16 +2,16 @@ package com.ifire.webservice.bookstore;
 
 import java.util.ArrayList;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document
+@Document(collection = "book")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

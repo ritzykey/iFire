@@ -42,7 +42,7 @@ const NavBar = () => {
                     }
 
                     {
-                        authState.id > 0 && <>
+                        authState.id && <>
                             <li className="nav-item">
                                 <Link className="nav-link" to={`/user/${authState.id}`}>My Profile</Link>
                             </li>

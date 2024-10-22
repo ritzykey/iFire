@@ -1,20 +1,18 @@
 package com.ifire.webservice.user;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
-@Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
+//@Entity
+//@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
+@Document(collection = "user")
 public class User {
 
     @Id
-    @GeneratedValue
-    long id;
+    String id;
 
     String username;
 
@@ -75,11 +73,11 @@ public class User {
         this.active = active;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

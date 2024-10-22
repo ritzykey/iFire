@@ -10,6 +10,7 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ifire.webservice.email.EmailService;
 import com.ifire.webservice.user.dto.UserDTO;
@@ -17,7 +18,6 @@ import com.ifire.webservice.user.expection.ActivationNotificationExpection;
 import com.ifire.webservice.user.expection.InvalidTokenException;
 import com.ifire.webservice.user.expection.NotUniqueEmailException;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -30,12 +30,12 @@ public class UserService {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Transactional(rollbackOn = MailException.class)
+    @Transactional(rollbackFor = MailException.class )
     public void save(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActivationToken(UUID.randomUUID().toString());
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
             emailService.sendActivationEmail(user.getEmail(), user.getActivationToken());
 
         } catch (DataIntegrityViolationException ex) {
@@ -67,7 +67,7 @@ public class UserService {
 
     }
 
-    public UserDTO getIdUser(Long id) {
+    public UserDTO getIdUser(String id) {
 
         return new UserDTO(userRepository.findById(id).get());
     }
