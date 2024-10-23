@@ -30,7 +30,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    
 
     @GetMapping("/users")
     Page<UserDTO> getAllUsers(Pageable page,
@@ -66,7 +65,6 @@ public class UserController {
     @PreAuthorize("#id == principal.id")
     UserDTO updateUser(@PathVariable String id, @Valid @RequestBody UserUpdate userUpdate,
             @AuthenticationPrincipal CurrentUser currentUser) {
-
         return userService.updateUser(id, userUpdate);
     }
 
