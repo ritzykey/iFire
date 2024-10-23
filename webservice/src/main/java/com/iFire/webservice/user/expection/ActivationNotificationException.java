@@ -4,8 +4,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.ifire.webservice.shared.Messages;
 
-public class ActivationNotificationExpection extends RuntimeException {
-    public ActivationNotificationExpection() {
+public class ActivationNotificationException extends RuntimeException {
+    public ActivationNotificationException() {
         super(Messages.getMessageForLocale("iFire.create.user.email.failure", LocaleContextHolder.getLocale()));
     }
 

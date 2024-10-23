@@ -23,7 +23,6 @@ const User = () => {
     const location = useLocation();
 
     useEffect(() => {
-        console.log(location)
 
         const fetch = async () => {
 

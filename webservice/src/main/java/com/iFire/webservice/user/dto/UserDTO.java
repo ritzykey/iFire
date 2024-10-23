@@ -25,6 +25,6 @@ public class UserDTO {
     }
 
     public String getImage() {
-        return image == null ? "default.png" : image;
+        return image;
     }
 }

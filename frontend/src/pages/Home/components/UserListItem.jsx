@@ -1,5 +1,6 @@
 
 import defaultProfileImage from '@/assets/defaultProfileImage.jpg';
+import { ProfileImage } from '@/shared/components/ProfileImage';
 import { Link } from 'react-router-dom';
 
 
@@ -7,9 +8,8 @@ const UserListItem = ({ user }) => {
 
 
     return <Link className="list-group-item list-group-item-action" to={`/user/${user.id}`} style={{ textDecoration: 'none' }} >
-        <img src={defaultProfileImage}
-            width="30"
-            className='img-fluid rounded-circle shadow-sm' />
+        <ProfileImage
+            width={30} image={user.image} />
 
         <span className='ms-2'>
             {user.username}

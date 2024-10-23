@@ -8,15 +8,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ifire.webservice.configuration.CurrentUser;
 import com.ifire.webservice.email.EmailService;
+import com.ifire.webservice.file.FileService;
 import com.ifire.webservice.user.dto.UserDTO;
 import com.ifire.webservice.user.dto.UserUpdate;
-import com.ifire.webservice.user.expection.ActivationNotificationExpection;
+import com.ifire.webservice.user.expection.ActivationNotificationException;
 import com.ifire.webservice.user.expection.InvalidTokenException;
 import com.ifire.webservice.user.expection.NotUniqueEmailException;
 
@@ -29,7 +30,11 @@ public class UserService {
     @Autowired
     EmailService emailService;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    FileService fileService;
 
     @Transactional(rollbackFor = MailException.class)
     public void save(User user) {
@@ -42,7 +47,7 @@ public class UserService {
         } catch (DataIntegrityViolationException ex) {
             throw new NotUniqueEmailException();
         } catch (MailException exception) {
-            throw new ActivationNotificationExpection();
+            throw new ActivationNotificationException();
         }
     }
 
@@ -58,7 +63,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Page<UserDTO> getAllUsers(Pageable pageable, User loggedInUser) {
+    public Page<UserDTO> getAllUsers(Pageable pageable, CurrentUser loggedInUser) {
 
         if (loggedInUser == null) {
             return userRepository.findAll(pageable).map(UserDTO::new);
@@ -81,6 +86,14 @@ public class UserService {
     public UserDTO updateUser(String id, UserUpdate userUpdate) {
         User inDB = getIdUser(id);
         inDB.setUsername(userUpdate.username());
+
+        if (userUpdate.image() == null) {
+            return new UserDTO(userRepository.save(inDB));
+        }
+
+        String fileName = fileService.saveBase64StringFile(userUpdate.image());
+        fileService.deleteProfileImage(inDB.getImage());
+        inDB.setImage(fileName);
         return new UserDTO(userRepository.save(inDB));
     }
 

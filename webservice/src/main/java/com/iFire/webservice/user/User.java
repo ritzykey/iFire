@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
+
 //@Entity
 //@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
 @Document(collection = "user")

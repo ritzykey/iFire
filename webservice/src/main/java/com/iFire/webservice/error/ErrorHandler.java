@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ifire.webservice.auth.exception.AuthenticationException;
 import com.ifire.webservice.shared.Messages;
-import com.ifire.webservice.user.expection.ActivationNotificationExpection;
-import com.ifire.webservice.user.expection.AuthorizationException;
+import com.ifire.webservice.user.expection.ActivationNotificationException;
 import com.ifire.webservice.user.expection.InvalidTokenException;
 import com.ifire.webservice.user.expection.NotUniqueEmailException;
 
@@ -30,9 +29,8 @@ public class ErrorHandler {
             NoSuchElementException.class,
             AuthenticationException.class,
             InvalidTokenException.class,
-            ActivationNotificationExpection.class,
-            NotUniqueEmailException.class,
-            AuthorizationException.class
+            ActivationNotificationException.class,
+            NotUniqueEmailException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ResponseEntity<ApiError> handleException(HttpServletRequest request, Exception exception) {
@@ -60,7 +58,7 @@ public class ErrorHandler {
             return ResponseEntity.status(400).body(apiError);
         }
 
-        if (exception instanceof ActivationNotificationExpection) {
+        if (exception instanceof ActivationNotificationException) {
             apiError.setStatus(502);
             return ResponseEntity.status(502).body(apiError);
         }
@@ -80,11 +78,6 @@ public class ErrorHandler {
         if (exception instanceof AuthenticationException) {
             apiError.setStatus(401);
             return ResponseEntity.status(401).body(apiError);
-        }
-
-        if (exception instanceof AuthorizationException) {
-            apiError.setStatus(403);
-            return ResponseEntity.status(403).body(apiError);
         }
 
         return ResponseEntity.badRequest().body(apiError);
