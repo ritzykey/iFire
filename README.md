@@ -10,6 +10,7 @@ Ensure you have the following installed on your machine:
 - **Node.js** (for running the Vite frontend)
 - **Java JDK** (for running the Spring Boot backend)
 - **Maven** (depending on your Spring Boot setup)
+- **MongoDB** (for database operations)
 
 ## Running the Frontend (React with Vite)
 
