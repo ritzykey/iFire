@@ -39,7 +39,7 @@ Navigate to the `webservice` folder and follow these steps:
 
     ```bash
     cd webservice
-    mvn spring-boot:run
+    mvnw spring-boot:run
     ```
 
 The backend will be running at `http://localhost:8080/`.
