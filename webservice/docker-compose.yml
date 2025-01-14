@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  app:
+    env_file: "webapp.env"
+    container_name: spring-boot-mongo
+    build: .
+    ports:
+      - "5000:5000"
+    restart: always
