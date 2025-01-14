@@ -3,6 +3,7 @@ package com.ifire.webservice.auth.token;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.ifire.webservice.user.UserService;
  * BasicAuthTokenService
  */
 @Service
+@ConditionalOnProperty(name = "iFire.token-type", havingValue = "basic")
 public class BasicAuthTokenService implements TokenService {
 
     @Autowired

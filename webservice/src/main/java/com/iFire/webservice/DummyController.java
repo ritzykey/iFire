@@ -9,6 +9,6 @@ public class DummyController {
 
     @GetMapping("/deneme")
     String test() {
-        return "Test message";
+        return "Test message HÜSEYIN";
     }
 }
